@@ -1,0 +1,281 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form_sync_product_quantity" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+	<style>
+		.blink {
+		-webkit-animation: blink 1s ease-out 3;
+		animation: blink 1s ease-out 3;
+		}
+		@-webkit-keyframes blink {
+		100% {background: #f0f333;}
+		}
+		@keyframes blink {
+		100% {background: #f0f333;}
+	</style>
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_module_title }}</h3>
+      </div>
+      <div class="panel-body">
+		<form action="{{ action }}" method="post" enctype="multipart/form-data" id="form_sync_product_quantity" class="form-horizontal">
+			<div class="form-group required">
+				<label class="col-sm-2 control-label" for="input-name">{{ entry_name }}</label>
+				<div class="col-sm-10">
+					<input type="text" name="name" value="{{ name }}" placeholder="{{ entry_name }}" id="input-name" class="form-control" />
+					{% if error_name %}
+					<div class="text-danger">{{ error_field }}</div>
+					{% endif %}
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+				<div class="col-sm-10">
+					<select name="status" id="input-status" class="form-control">
+					{% if status %}
+					<option value="1" selected="selected">{{ text_enabled }}</option>
+					<option value="0">{{ text_disabled }}</option>
+					{% else %}
+					<option value="1">{{ text_enabled }}</option>
+					<option value="0" selected="selected">{{ text_disabled }}</option>
+					{% endif %}
+					</select>
+				</div>
+			</div>
+			<div class="form-group required">
+				<label class="col-sm-2 control-label" for="input-status">{{ text_database_host }}</label>
+				<div class="col-sm-10">
+					<input type="text" name="newdb_host" value="{{ newdb_host }}" class="form-control" />
+					{% if error_newdb_host %}
+					<div class="text-danger">{{ error_field }}</div>
+					{% endif %}
+				</div>
+			</div>
+			<div class="form-group required">
+				<label class="col-sm-2 control-label" for="newdb_port">{{ text_database_host_port }}</label>
+				<div class="col-sm-10">
+					<input type="text" id="newdb_port" name="newdb_port" value="{{ newdb_port }}" class="form-control" />
+					{% if error_newdb_port %}
+					<div class="text-danger">{{ error_field }}</div>
+					{% endif %}
+				</div>
+			</div>
+			<div class="form-group required">
+				<label class="col-sm-2 control-label" for="newdb_user">{{ text_user }}</label>
+				<div class="col-sm-10">
+					<input type="text" id="newdb_user" name="newdb_user" value="{{ newdb_user }}" class="form-control" />
+					{% if error_newdb_user %}
+					<div class="text-danger">{{ error_field }}</div>
+					{% endif %}
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="newdb_password">{{ text_password }}</label>
+				<div class="col-sm-10">
+					<input type="password" id="newdb_password" name="newdb_password" value="{{ newdb_password }}" class="form-control" />
+				</div>
+			</div>
+			<div class="form-group required">
+				<label class="col-sm-2 control-label" for="newdb_name">{{ text_database_name }}</label>
+				<div class="col-sm-10">
+					<input type="text" id="newdb_name" name="newdb_name" value="{{ newdb_name }}" class="form-control" />
+					{% if error_newdb_name %}
+					<div class="text-danger">{{ error_field }}</div>
+					{% endif %}
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="newdb_prefix">{{ text_database_prefix }}</label>
+				<div class="col-sm-10">
+					<input type="text" id="newdb_prefix" name="newdb_prefix" value="{{ newdb_prefix }}" class="form-control" />
+					{% if error_newdb_prefix %}
+					<div class="text-danger">{{ error_field }}</div>
+					{% endif %}
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="input-process-status"><span data-toggle="tooltip" title="{{ help_sync_by }}">{{ text_sync_by }}</span></label>
+				<div class="col-sm-10">
+					<div class="well well-sm" style="height: 150px; overflow: auto;">
+					{% for sync_prod_id in list_sync_prod_id %}
+					<div id="list-sync-prod-id" class="list_sync_prod_id">
+						<label>
+						{% if sync_prod_id['id'] == sync_by %}
+						<input type="checkbox" name="sync_by" value="{{ sync_prod_id['id'] }}" checked="checked" />
+						{{ sync_prod_id['name'] }}
+						{% else %}
+						<input type="checkbox" name="sync_by" value="{{ sync_prod_id['id'] }}" />
+						{{ sync_prod_id['name'] }}
+						{% endif %}
+						</label>
+					</div>
+					{% endfor %}
+					</div>
+					{% if error_sync_by %}
+					<div class="text-danger">{{ error_sync_by }}</div>
+					{% endif %}
+				</div>
+            </div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="input-process-status"><span data-toggle="tooltip" title="{{ help_sync_cat }}">{{ text_sync_cat }}</span></label>
+				<div class="col-sm-10">
+					<input type="text" name="category" value="" placeholder="{{ entry_category }}" id="input-category" class="form-control" />
+					<div id="product-category" class="well well-sm" style="height: 150px; overflow: auto;">
+                    {% for sync_cat in list_sync_categories %}
+                    <div id="sync-cat{{ sync_cat['category_id'] }}"><i class="fa fa-minus-circle"></i> {{ sync_cat['name'] }}
+                      <input type="hidden" name="sync_cat[]" value="{{ sync_cat['category_id'] }}" />
+                    </div>
+                    {% endfor %}
+					</div>
+				</div>
+            </div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="sync_status"><span data-toggle="tooltip" title="{{ help_sync_status }}">{{ text_sync_status }}</span></label>
+				<div class="col-sm-10">
+                  <label class="radio-inline">
+                    {% if sync_status is not empty and sync_status == '1' %}
+                    <input type="radio" name="sync_status" value="1" checked="checked" />
+                    {{ text_yes }}
+                    {% else %}
+                    <input type="radio" name="sync_status" value="1" />
+                    {{ text_yes }}
+                    {% endif %}
+                  </label>
+                  <label class="radio-inline">
+                    {% if sync_status is empty or sync_status == '0' %}
+                    <input type="radio" name="sync_status" value="0" checked="checked" />
+                    {{ text_no }}
+                    {% else %}
+                    <input type="radio" name="sync_status" value="0" />
+                    {{ text_no }}
+                    {% endif %}
+                  </label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="op_sync"><span data-toggle="tooltip" title="{{ help_option_sync }}">{{ text_option_sync }}</span></label>
+				<div class="col-sm-10">
+                  <label class="radio-inline">
+					{% if op_sync is not empty and op_sync == '1'%}
+                    <input type="radio" name="op_sync" value="1" checked="checked" />
+                    {{ text_yes }}
+                    {% else %}
+                    <input type="radio" name="op_sync" value="1" />
+                    {{ text_yes }}
+                    {% endif %}
+                  </label>
+                  <label class="radio-inline">
+					{% if op_sync is empty or op_sync == '0' %}
+                    <input type="radio" name="op_sync" value="0" checked="checked" />
+                    {{ text_no }}
+                    {% else %}
+                    <input type="radio" name="op_sync" value="0" />
+                    {{ text_no }}
+                    {% endif %}
+                  </label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="op_sync_lang"><span data-toggle="tooltip" title="{{ help_option_sync_lang }}">{{ text_option_sync_lang }}</span></label>
+				<div class="col-sm-10">
+					<select type="text" id="op_sync_lang" name="op_sync_lang" class="form-control">
+					{% for language in languages %}
+						{% if op_sync_lang and op_sync_lang == language['language_id'] %}
+						<option value="{{ language['language_id'] }}" selected="selected">{{ language['name'] }}</option>						
+						{% else %}
+						<option value="{{ language['language_id'] }}">{{ language['name'] }}</option>
+						{% endif %}
+					{% endfor %}
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="sync_difference"><span data-toggle="tooltip" title="{{ help_sync_difference }}">{{ text_sync_difference }}</span></label>
+				<div class="col-sm-10">
+                  <label class="radio-inline">
+					{% if sync_difference is not empty and sync_difference == '1' %}
+                    <input type="radio" name="sync_difference" value="1" checked="checked" />
+                    {{ text_yes }}
+                    {% else %}
+                    <input type="radio" name="sync_difference" value="1" />
+                    {{ text_yes }}
+                    {% endif %}
+                  </label>
+                  <label class="radio-inline">
+					{% if sync_difference is empty or sync_difference == '0' %}
+                    <input type="radio" name="sync_difference" value="0" checked="checked" />
+                    {{ text_no }}
+                    {% else %}
+                    <input type="radio" name="sync_difference" value="0" />
+                    {{ text_no }}
+                    {% endif %}
+                  </label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="subtract_constant"><span data-toggle="tooltip" title="{{ help_subtract_constant }}">{{ text_subtract_constant }}</span></label>
+				<div class="col-sm-10">
+					<input type="number" min="0" id="subtract_constant" name="subtract_constant" value="{{ subtract_constant }}" class="form-control" />
+					{% if error_subtract_constant %}
+					<div class="text-danger">{{ subtract_constant }}</div>
+					{% endif %}
+				</div>
+			</div>
+		</form>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript"><!--
+//Sync Product ID's
+$('#list-sync-prod-id input[name=\'sync_by\']').on('change', function() {
+    $('input[name=\'sync_by\']').not(this).prop('checked', false);  
+});
+
+// Category
+$('input[name=\'category\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=catalog/category/autocomplete&token={{ token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',			
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['category_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'category\']').val('');
+		
+		$('#product-category' + item['value']).remove();
+		
+		$('#product-category').append('<div id="sync-cat' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="sync_cat[]" value="' + item['value'] + '" /></div>');	
+	}
+});
+
+$('#product-category').delegate('.fa-minus-circle', 'click', function() {
+	$(this).parent().remove();
+});
+//--></script>
+{{ footer }}

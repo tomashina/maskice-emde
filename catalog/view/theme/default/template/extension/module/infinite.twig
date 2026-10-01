@@ -1,0 +1,156 @@
+<script type="text/javascript" id="infinite-script"><!--
+$(document).ready(function() {
+	var url_name = window.location.href.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-');
+
+	{% if css %}$('<style type="text/css" id="infinite-style">{{ css }}</style>').appendTo('head');{% endif %}
+
+	{% if animate %}
+	if (!$('link[href*="animate.min.css"]').length) {
+		$('<link />', {type : 'text/css', rel : 'stylesheet', href : 'catalog/view/theme/default/stylesheet/animate.min.css'}).appendTo('head');
+	}
+	{% endif %}
+
+	function digitcart_infinite() {
+		var status = true;
+
+		{% if not mobile %}
+		// Check for mobile status
+		if ($(window).width() < 980) {
+			status = false
+		}
+		{% endif %}
+
+		if (status) {
+			var session_storage = ('sessionStorage' in window) && window['sessionStorage'] !== null;
+			var product 			= '{{ product }}';
+			var wrapper 			= $(product).closest('{{ wrapper }}');
+			var pagination		= '{{ pagination }}';
+
+			if ($(product).length && $(wrapper).length && $(pagination).length) {
+				{% if hide %}$(pagination).hide();{% endif %}
+
+				if (session_storage) {
+					// Check for browser back button
+					if (typeof(performance.navigation.type) != 'undefined' && performance.navigation.type == 2) {
+						if ('iwh' + url_name in sessionStorage) {
+							$(wrapper).html(sessionStorage.getItem('iwh' + url_name));
+						}
+
+						if ('iph' + url_name in sessionStorage) {
+							$(pagination).html(sessionStorage.getItem('iph' + url_name));
+						}
+					}
+				}
+
+				var active 			= '{{ active }}';
+				var threshold 	= {{ threshold }};
+				var loading 		= '<div id="dc-loading" class="dc-clearfix clearfix">{{ loading }}</div>';
+				var button			= '<div id="dc-loader" class="dc-clearfix clearfix">{{ button }}</div>';
+				var finished		= '<div id="dc-loaded" class="dc-clearfix clearfix">{{ finished }}</div>';
+
+				{% if method == 'scroll' %}
+				var go = true;
+
+				$(window).off('scroll').on('scroll', function() {
+					var lastProduct			= $(product).last();
+					var lastProductPos 	= lastProduct.offset().top + threshold;
+					var windowPos 			= $(window).scrollTop();
+
+					if (go) {
+						if (windowPos > lastProductPos || ($(document).height() - $(window).height()) == windowPos) {
+							loadProducts();
+						}
+					}
+				});
+				{% else %}
+				var link = $(pagination).find(active).next().find('[href]');
+
+				if (link.length) {
+					$('#dc-loader').remove();
+					$(wrapper).append(button);
+
+					$('#dc-loader').off('click').on('click', function() {
+						loadProducts();
+					});
+				}
+				{% endif %}
+			}
+		}
+
+		function loadProducts() {
+			var link = $(pagination).find(active).next().find('[href]');
+
+			if (link.length) {
+				$.ajax({
+					url: link.attr('href'),
+					cache: false,
+					dataType: 'html',
+					beforeSend: function () {
+						go = false;
+						$(wrapper).append(loading);
+					},
+					success: function (html) {
+						{% if update %}
+						if (history.pushState) {
+							window.history.pushState('', '', link.attr('href'));
+						}
+						{% endif %}
+						go = true;
+						$('#dc-loading').remove();
+						var classes = 'dc-new-product ';
+						{% if class %}
+						classes += '{{ class }}';
+						{% endif %}
+						var product_classes = $(product).attr('class');
+						if (product_classes) {
+							classes += ' ' + product_classes;
+						}
+						var new_product = $(product, $(html));
+						if (new_product) {
+							if ($('#dc-loader').length) {
+								$('#dc-loader').before(new_product);
+							} else {
+								wrapper.append(new_product);
+							}
+						}
+
+						var new_pagination = $(pagination, $(html));
+
+						if (new_pagination) {
+							$(pagination).replaceWith(new_pagination);
+
+							if (!$(pagination).find(active).next().find('[href]').length) {
+								go = false;
+
+								if ($('#dc-loader').length) {
+									$('#dc-loader').replaceWith(finished);
+								} else {
+									wrapper.append(finished);
+								}
+							}
+						}
+
+						{% if hide %}$(pagination).hide();{% endif %}
+
+						$(new_product).removeAttr('class').addClass(classes);
+
+						if (session_storage) {
+							sessionStorage.setItem('iwh' + url_name, $(wrapper).html());
+							sessionStorage.setItem('iph' + url_name, $(pagination).html());
+						}
+
+						// Custom JS code from the module settings
+						{% if js %}{{ js }}{% endif %}
+					},
+					error: function(xhr, ajaxOptions, thrownError) {
+						console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+					}
+				});
+			}
+		}
+	}
+
+	// Init
+	digitcart_infinite();
+});
+//--></script>

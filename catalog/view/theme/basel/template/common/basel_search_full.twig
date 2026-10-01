@@ -1,0 +1,47 @@
+<div class="full-search-wrapper">
+
+<div class="search-category ">
+<select name="category_id" class="form-control" id="dynamic_select">
+<option value="0"> {{ basel_text_category }}</option>
+{% for attribute in attributes %}
+    {% if attribute == tag and attribute != ''  %}
+         <option value="/index.php?route=product/search&tag={{ attribute  | url_encode(true)}}" selected="selected">{{ attribute }}</option>
+   
+ {% elseif attribute == ''  %}
+
+        {% else %}
+         <option value="/index.php?route=product/search&tag={{ attribute | url_encode(true) }}">{{ attribute }}</option>
+        {% endif %} 
+{% endfor %}
+</select>
+</div>
+<div class="search-field search-main">
+<input type="text" name="search" value="{{ search }}" placeholder="{{ basel_text_search }}" class="form-control main-search-input" />
+</div>
+
+<div class="search-button do-search main">
+<a class="icon-magnifier icon"></a>
+</div>
+</div>
+<script>
+$(document).ready(function() {
+$('.search-holder-mobile input[name=\'search-mobile\']').attr("placeholder", "{{ basel_text_search }}").attr("value", "{{ search }}");
+});
+</script>
+
+    <script>
+        $(document).ready(function() { $("#dynamic_select").select2(); });
+    </script>
+
+<script>
+    $(function(){
+      // bind change event to select
+      $('#dynamic_select').on('change', function () {
+          var url = $(this).val(); // get selected value
+          if (url) { // require a URL
+              window.location = url; // redirect
+          }
+          return false;
+      });
+    });
+</script>

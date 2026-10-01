@@ -1,0 +1,187 @@
+{{ header }} {{ column_left }} 
+<div id="content">
+  <div class="page-header">
+	<div class="container-fluid">
+	  <div class="pull-right">
+	  	<button type="submit" form="form-excelup" name="apply" data-toggle="tooltip" title="{{ button_apply }}" class="btn btn-success"><i class="fa fa-check"></i></button>
+		<button type="submit" form="form-excelup" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+		<a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+	  	<h1>{{ heading_title }}</h1>
+		<ul class="breadcrumb">
+			{% for breadcrumb in breadcrumbs %} 
+			<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+			{% endfor %} 
+		</ul>
+	</div>
+  </div>
+  <div class="container-fluid">
+	{% if error_warning %} 
+		<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }} 
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+		</div>
+	{% endif %}
+	{% if success %} 
+		<div class="alert alert-success alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ success }} 
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+		</div>
+	{% endif %}
+	<div class="panel panel-default">
+	  <div class="panel-heading">
+		<h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+		<span class="pull-right"><a href="https://opencartbot.com/en/" target="_blank"><kbd>opencartbot</kbd></a></span>
+	  </div>
+	  <div class="panel-body">
+		<ul class="nav nav-tabs">
+			<li ><a href="#tab-main" data-toggle="tab">{{ tab_main }}</a></li>
+			<li class="active"><a href="#tab-import" data-toggle="tab">{{ tab_import }}</a></li>
+			<li><a href="#tab-license" data-toggle="tab">{{ tab_license }}</a></li>
+		</ul>
+		<div class="tab-content">
+			<div class="tab-pane  form-horizontal" id="tab-main">
+				<form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-excelup" class="form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-status"><span class="help" title="{{ help_status }}" data-toggle="tooltip">{{ entry_status }}</span></label>
+						<div class="col-sm-10">
+							<select name="module_excelup_status" id="input-status" class="form-control">
+								<option value="0" {{ "0" == module_excelup_status ? "selected" : "" }}>{{ text_disabled }}</option>
+								<option value="1" {{ "1" == module_excelup_status ? "selected" : "" }}>{{ text_enabled }}</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-firstrow"><span class="help" title="{{ help_firstrow }}" data-toggle="tooltip">{{ entry_firstrow }}</span></label>
+						<div class="col-sm-10">
+							<input type="text" name="module_excelup_firstrow" value="{{ module_excelup_firstrow }}" placeholder="{{ entry_firstrow }}" id="input-firstrow" class="form-control"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-ident"><span class="help" title="{{ help_ident }}" data-toggle="tooltip">{{ entry_ident }}</span></label>
+						<div class="col-sm-10">
+							<select name="module_excelup_ident" id="input-ident" class="form-control">
+								<option value="product_id" {{ "product_id" == module_excelup_ident ? "selected" : "" }}>{{ text_product_id }}</option>
+								<option value="model" {{ "model" == module_excelup_ident ? "selected" : "" }}>{{ text_model }}</option>
+								<option value="sku" {{ "sku" == module_excelup_ident ? "selected" : "" }}>{{ text_sku }}</option>
+								<option value="upc" {{ "upc" == module_excelup_ident ? "selected" : "" }}>UPC</option>
+								<option value="ean" {{ "ean" == module_excelup_ident ? "selected" : "" }}>EAN</option>
+								<option value="jan" {{ "jan" == module_excelup_ident ? "selected" : "" }}>JAN</option>
+								<option value="mpn" {{ "mpn" == module_excelup_ident ? "selected" : "" }}>MPN</option>
+								<option value="isbn" {{ "isbn" == module_excelup_ident ? "selected" : "" }}>ISBN</option>
+								<option value="location" {{ "location" == module_excelup_ident ? "selected" : "" }}>Location</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-idcol"><span class="help" title="{{ help_idcol }}" data-toggle="tooltip">{{ entry_idcol }}</span></label>
+						<div class="col-sm-10">
+							<input type="text" name="module_excelup_idcol" value="{{ module_excelup_idcol }}" placeholder="{{ entry_idcol }}" id="input-idcol" class="form-control"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-price"><span class="help" title="{{ help_price }}" data-toggle="tooltip">{{ entry_price }}</span></label>
+						<div class="col-sm-10">
+							<select name="module_excelup_price" id="input-price" class="form-control">
+								<option value="0" {{ "0" == module_excelup_price ? "selected" : "" }}>{{ text_disabled }}</option>
+								<option value="1" {{ "1" == module_excelup_price ? "selected" : "" }}>{{ text_enabled }}</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group" data-parent-id="#input-price" data-parent-value="1">
+						<label class="col-sm-2 control-label" for="input-pricecol"><span class="help" title="{{ help_pricecol }}" data-toggle="tooltip">{{ entry_pricecol }}</span></label>
+						<div class="col-sm-10">
+							<input type="text" name="module_excelup_pricecol" value="{{ module_excelup_pricecol }}" placeholder="{{ entry_pricecol }}" id="input-pricecol" class="form-control"/>
+						</div>
+					</div>
+					<div class="form-group" data-parent-id="#input-price" data-parent-value="1">
+						<label class="col-sm-2 control-label" for="input-priceup"><span class="help" title="{{ help_priceup }}" data-toggle="tooltip">{{ entry_priceup }}</span></label>
+						<div class="col-sm-10">
+							<input type="text" name="module_excelup_priceup" value="{{ module_excelup_priceup }}" placeholder="{{ entry_priceup }}" id="input-priceup" class="form-control"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-special"><span class="help" title="{{ help_special }}" data-toggle="tooltip">{{ entry_special }}</span></label>
+						<div class="col-sm-10">
+							<select name="module_excelup_special" id="input-special" class="form-control">
+								<option value="0" {{ "0" == module_excelup_special ? "selected" : "" }}>{{ text_disabled }}</option>
+								<option value="1" {{ "1" == module_excelup_special ? "selected" : "" }}>{{ text_enabled }}</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group" data-parent-id="#input-special" data-parent-value="1">
+						<label class="col-sm-2 control-label" for="input-special-new"><span class="help" title="{{ help_special_new }}" data-toggle="tooltip">{{ entry_special_new }}</span></label>
+						<div class="col-sm-10">
+							<select name="module_excelup_special_new" id="input-special-new" class="form-control">
+								<option value="0" {{ "0" == module_excelup_special_new ? "selected" : "" }}>{{ text_disabled }}</option>
+								<option value="1" {{ "1" == module_excelup_special_new ? "selected" : "" }}>{{ text_enabled }}</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group" data-parent-id="#input-special" data-parent-value="1">
+						<label class="col-sm-2 control-label" for="input-specialcol"><span class="help" title="{{ help_specialcol }}" data-toggle="tooltip">{{ entry_specialcol }}</span></label>
+						<div class="col-sm-10">
+							<input type="text" name="module_excelup_specialcol" value="{{ module_excelup_specialcol }}" placeholder="{{ entry_specialcol }}" id="input-specialcol" class="form-control"/>
+						</div>
+					</div>
+					<div class="form-group" data-parent-id="#input-special" data-parent-value="1">
+						<label class="col-sm-2 control-label" for="input-specialup"><span class="help" title="{{ help_specialup }}" data-toggle="tooltip">{{ entry_specialup }}</span></label>
+						<div class="col-sm-10">
+							<input type="text" name="module_excelup_specialup" value="{{ module_excelup_specialup }}" placeholder="{{ entry_specialup }}" id="input-specialup" class="form-control"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-quantity"><span class="help" title="{{ help_quantity }}" data-toggle="tooltip">{{ entry_quantity }}</span></label>
+						<div class="col-sm-10">
+							<select name="module_excelup_quantity" id="input-quantity" class="form-control">
+								<option value="0" {{ "0" == module_excelup_quantity ? "selected" : "" }}>{{ text_disabled }}</option>
+								<option value="1" {{ "1" == module_excelup_quantity ? "selected" : "" }}>{{ text_enabled }}</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group" data-parent-id="#input-quantity" data-parent-value="1">
+						<label class="col-sm-2 control-label" for="input-quantitycol"><span class="help" title="{{ help_quantitycol }}" data-toggle="tooltip">{{ entry_quantitycol }}</span></label>
+						<div class="col-sm-10">
+							<input type="text" name="module_excelup_quantitycol" value="{{ module_excelup_quantitycol }}" placeholder="{{ entry_quantitycol }}" id="input-quantitycol" class="form-control"/>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="tab-pane active" id="tab-import">
+				<form action="{{ action_upload }}" method="post" enctype="multipart/form-data" id="form-excelup-upload" class="form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-2 control-label">{{ entry_file }}</label>
+						<div class="col-sm-10"><input type="file" name="excelup_upload" /></div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label"> </label>
+						<div class="col-sm-10"><input class="btn btn-primary" type="submit" value="{{ text_import }}" /></div>
+					</div>
+				</form>
+			</div>
+			<div class="tab-pane" id="tab-license">
+				<div class="copyright-opencartbot col-xs-offset-1">{{ text_copyright }}</div>
+			</div>
+		</div>
+	  </div>
+	</div>
+  </div>
+</div>
+<script><!--
+	function visibility(selector = '.form-group'){
+		$.each($(selector), function(index, item){
+			var parent = $(item).data('parent-id');
+			var value = $(item).data('parent-value');
+			if (parent) {
+			if ($(parent).val() == value) {
+				$(item).css('background', '#e9f1fe').show(400);
+			} else {
+				$(item).hide(400);
+			}
+			}
+		});
+	}
+
+	$(document).ready(function(){
+		setInterval('visibility()', 500);
+	});
+//--></script>
+{{ footer }} 

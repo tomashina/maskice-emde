@@ -1,0 +1,59 @@
+# Environment and private data
+/config.php
+/admin/config.php
+/php.ini
+/.user.ini
+/.htpasswd
+/.ftpquota
+/.env
+/.env.*
+/auth.json
+/credentials.json
+*.pem
+*.key
+*.p12
+*.pfx
+*.xlsx
+*.xls
+*.sql
+*.sql.gz
+*.dump
+*.log
+error_log
+*.tar
+*.tar.gz
+*.zip
+*---
+*.bak
+*.old
+
+# Generated OpenCart files
+/storage/
+/system/storage/cache/
+/system/storage/download/
+/system/storage/logs/
+/system/storage/modification/
+/system/storage/session/
+/system/storage/upload/
+/image/cache/
+/image/catalog/
+/sitemaps/
+
+# Local files
+/.deploy.env
+/.deploy-backups/
+/.idea/
+/.vscode/
+.DS_Store
+Thumbs.db
+
+# Bundled integration files containing credentials; retained only on the server
+/admin/model/extension/payment/pp_express.php
+/admin/view/javascript/clicker_ckeditor/clicker/plugins/leaflet/dialogs/leaflet.js
+/admin/view/javascript/clicker_ckeditor/clicker/plugins/leaflet/Installation Guide.txt
+/admin/view/javascript/clicker_ckeditor/clicker/plugins/leaflet/demo/
+/catalog/model/extension/payment/alipay.php
+/catalog/view/javascript/mpgdpr/cookieconsent/cookieconsent.js
+/catalog/view/javascript/mpgdpr/cookieconsent/cookieconsent.min.js
+/catalog/view/javascript/mpgdpr/cookieconsent/cookieconsent.unmin.js
+/system/storage/vendor/**/tests/
