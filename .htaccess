@@ -23,9 +23,9 @@ RewriteEngine On
 
 RewriteBase /
 
-RewriteCond %{HTTPS} off [OR]
-RewriteCond %{HTTP_HOST} !^www\. [NC]
-RewriteRule ^(.*) https://www.maskicezamobitel.hr%{REQUEST_URI} [R=301,L,NE]
+RewriteCond %{HTTPS} !=on [OR]
+RewriteCond %{HTTP_HOST} !^www\.maskice-emde\.hr$ [NC]
+RewriteRule ^ https://www.maskice-emde.hr%{REQUEST_URI} [R=301,L,NE]
 
 
 
